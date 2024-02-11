@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OpenStreetMap Example</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 400px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div>
+    <input type="text" id="searchInput" placeholder="Enter a place name">
+    <button onclick="searchPlace()">Search</button><br>
+    <a href="#" onclick="back()">go back</a>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+
+    // Set the initial map coordinates and zoom level
+    const map = L.map('map').setView([-26.1898, 28.0315], 20);
+
+    // Add a tile layer to display the map (using OSM's default tile server)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    // Function to handle the user's location
+    function onLocationFound(e) {
+      // Get user's latitude and longitude
+      const userLat = e.latlng.lat;
+      const userLng = e.latlng.lng;
+
+      // Set the map view to the user's location
+      map.setView([userLat, userLng], 20);
+
+      // Add a marker to the map at the user's location
+      const marker = L.marker([userLat, userLng]).addTo(map);
+      marker.bindPopup('Your current location').openPopup();
+    }
+
+    // Function to handle location error
+    function onLocationError(e) {
+      alert("Unable to get your location. Please allow location access.");
+    }
+
+    // Request access to the user's location
+    map.on('locationfound', onLocationFound);
+    map.on('locationerror', onLocationError);
+    map.locate({ setView: true, maxZoom: 20 });
+
+    // Function to search for a place and indicate it on the map
+    function searchPlace() {
+      const searchInput = document.getElementById('searchInput').value;
+      if (searchInput !== '') {
+        const query = encodeURIComponent(searchInput);
+        const nominatimUrl = `https://nominatim.openstreetmap.org/search?q=${query}&format=json`;
+
+        fetch(nominatimUrl)
+          .then(response => response.json())
+          .then(data => {
+            if (data.length > 0) {
+              const { lat, lon } = data[0];
+              map.setView([lat, lon], 20);
+
+              // Add a marker to the map at the searched location
+              const marker = L.marker([lat, lon]).addTo(map);
+              marker.bindPopup(searchInput).openPopup();
+            } else {
+              alert('Place not found. Please enter a valid place name.');
+            }
+          })
+          .catch(error => {
+            alert('Error fetching data from Nominatim API. Please try again later.');
+            console.error('Nominatim API Error:', error);
+          });
+      } else {
+        alert('Please enter a place name.');
+      }
+    }
+    function back(){
+      window.location.assign('cover.html');
+    }
+  </script>
+</body>
+</html>

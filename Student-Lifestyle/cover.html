@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login Page</title>
+    
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+    }
+    
+    .container {
+    margin-bottom: 30px;
+    }
+
+    h1 {
+    margin-bottom: 10px;
+    }
+
+    textarea {
+    width: 100%;
+    resize: vertical;
+    margin-bottom: 10px;
+    }
+
+    button {
+    cursor: pointer;
+    }
+
+        .box {
+          border: 1px solid black;
+          padding: 10px;
+          margin: 10px;
+          cursor: pointer;
+        }
+        .popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+      background-color: white;
+      width: 300px;
+      margin: 100px auto;
+      padding: 20px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    .popup-link {
+      display: block;
+      margin: 10px;
+    }
+    #form {
+  display: block;
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+#form {
+  margin-top: 10px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+input[type='number'] {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+#total {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+/* Modal styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 600px;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}
+
+.comment-item {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+      </style>
+</head>
+<body>
+  
+ <h1>What would you like to do today?</h1>
+ <button onclick="finance()">Manage Finances</button>
+ <button onclick="application()">Varsity Applications</button>
+ <button onclick="navigate()">Navigate My School</button>
+ <button onclick="chat()">Chat with me</button>
+
+ <div style="display: none;" id="form">
+    <h2>Monthly budget</h2>
+
+    Net allowance(R):<input type="" name="name" id="net">
+    <br>
+    <div id="form">
+        <h3>Add expenses:</h3>
+        <label for="groceries">Groceries:</label>
+        <input type='number' id="g" ><br>
+        <label for="toiletries">Toiletries:</label>
+        <input type='number' id="t" >
+        <br>
+        <label for="bills">Bills:</label>
+        <input type='number' id="b" >
+        <br>
+        <label for="other">Other:</label>
+        <input type='number'  id="o"><br>
+        <button onclick="calc()">Calculate</button><br>
+        <br>
+        
+        <label for="total">Total(R):</label><p id="total"></p>
+        
+        <br>
+        <label for="rem">Amount remaining(R):</label><p id="rem"></p>
+       
+
+    </div>
+     
+   <h3> For more stores: <a href="https://www.onecart.co.za/">click here</a></h3>
+   <h3>If you want to save better: <a href="https://www.moneyweb.co.za/news/south-africa/best-fixed-deposit-rates-in-sa-in-2023/">click here</a></h3>
+</div>
+<div style="display: none;" id="app">
+    <label for="search">Search university:</label>
+    <input type="search" id="search"> 
+    <div id="dataList"></div>
+    <h3 >Funding:</h3>
+    <h4>NSFAS application: <a href="https://www.nsfas.org.za/content/">click here</a></h4>
+   <h4>List of All bursaries in South Africa: <a href="https://onlineapplications.co.za/list-of-all-bursaries-2019-2019-in-south-africa/?gclid=CjwKCAjw8ZKmBhArEiwAspcJ7gyJqJ9QTVpRWxeE3LFMFVJw0Vev4_N2etVKag8AgdiYcUub8RaeihoCkv4QAvD_BwE">click here</a></h4>
+
+</div>
+
+<div style="display: none;" id="chatbox">
+<div class="container">
+    <h1>Write Your Post</h1>
+    <textarea id="postContent" rows="4" placeholder="Write your post here..."></textarea>
+    <button onclick="submitPost()">Submit</button>
+  </div>
+
+  <div class="container">
+    <h1>Posts</h1>
+    <div id="postsList"></div>
+  </div>
+  <div id="postModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 id="postTitle"></h2>
+      <p id="postFullContent"></p>
+      <textarea id="commentContent" rows="3" placeholder="Write your comment here..."></textarea>
+      <button onclick="submitComment()">Submit Comment</button>
+      <div id="commentsList"></div>
+    </div>
+  </div>
+    <!-- Modal for displaying post and comments -->
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+          <span class="close" onclick="closeModal()">&times;</span>
+          <h2 id="postTitle"></h2>
+          <p id="postFullContent"></p>
+          <textarea id="commentContent" rows="3" placeholder="Write your comment here..."></textarea>
+          <button onclick="submitComment()">Submit Comment</button>
+          <div id="commentsList"></div>
+        </div>
+      </div>
+    
+</div>
+<div id="popup" style="display: none;" class="popup">
+    <div class="popup-content">
+      <h2>Welcome!</h2>
+      <p> Here are two links:</p>
+      <a class="popup-link" id="link1" target="_blank">Link 1</a>
+      <a class="popup-link" id="link2" target="_blank">Link 2</a>
+      <button id="closePopupBtn" onclick="close()">Close</button>
+    </div>
+  </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/7.14.1-0/firebase-firestore.js"></script>
+<script>
+     const form =document.getElementById("form");
+     const form1=document.getElementById("app");
+     const chat1=document.getElementById('chatbox');
+     
+    
+    function finance(){
+        form1.style.display='none';
+        chat1.style.display='none';
+     form.style.display='block';
+    
+    }
+    function application(){
+        chat1.style.display='none';
+     form.style.display='none';
+     form1.style.display='block';
+    
+
+    }
+    function navigate(){
+       window.location.assign('i.html');
+    }
+    function chat(){
+        chat1.style.display='block';
+        form.style.display='none';
+     form1.style.display='none';
+  
+    }
+    function calc(){
+              var groc = +(document.getElementById('g').value);
+			  var toi = +(document.getElementById('t').value);
+			  var bil = +(document.getElementById('b').value);
+ 			  var oth = +(document.getElementById('o').value);
+             var n = +(document.getElementById('net').value);
+            var tot =  groc + toi + bil + oth ;
+            var rem= n-tot;
+  
+
+            document.getElementById("total").innerHTML = tot;
+            document.getElementById("rem").innerHTML = rem;
+    }
+    
+</script>
+
+<script>
+    const firebaseConfig = {
+  //   copy your firebase config informations
+  apiKey: "AIzaSyBiQr7aHxdYxk8sCkHxMebkVyBEgXCnknU",
+  authDomain: "online-store-b90ca.firebaseapp.com",
+  databaseURL: "https://online-store-b90ca-default-rtdb.firebaseio.com",
+  projectId: "online-store-b90ca",
+  storageBucket: "online-store-b90ca.appspot.com",
+  messagingSenderId: "160581372978",
+  appId: "1:160581372978:web:b507d7ac5f14c9e4ff002b",
+  measurementId: "G-PH4QNCPP2J"
+
+};
+// initialize firebase
+// initialize Firebase using the provided configuration
+firebase.initializeApp(firebaseConfig);
+// reference your database
+var contactFormDB = firebase.database().ref("university");
+// Reference to your Firebase database
+const database = firebase.database();
+var pop=document.getElementById('popup');
+var close=document.getElementById('closePopupBtn');
+var id='';
+// Function to display the data in boxes
+
+close.addEventListener('click',()=>{
+    pop.style.display='none';
+});
+function displayData(data) {
+  const dataListDiv = document.getElementById('dataList');
+  dataListDiv.innerHTML = '';
+
+  data.forEach(item => {
+    const box = document.createElement('div');
+    box.className = 'box';
+    box.textContent = item.name;
+
+    box.addEventListener('click', () => {
+      // Store the details of the clicked box (name, link1, link2)
+      const link1 = document.getElementById('link1');
+      const link2 = document.getElementById('link2');
+
+    link1.textContent = 'Download prospectus';
+    link2.textContent = 'Apply online';
+
+    link1.href = item.link_apply;
+    link2.href = item.link_prosp;
+pop.style.display='block';
+      
+    });
+
+    dataListDiv.appendChild(box);
+  });
+}
+
+// Function to fetch data from the Firebase database
+function getDataFromFirebase() {
+  const dataRef = database.ref('university');
+  dataRef.once('value')
+    .then(snapshot => {
+      const data = [];
+      snapshot.forEach(childSnapshot => {
+        const item = childSnapshot.val();
+        data.push(item);
+      });
+      displayData(data);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+}
+
+// Call the function to fetch and display data from Firebase
+getDataFromFirebase();
+
+
+// Function to submit a new post to the database
+function submitPost() {
+  const postContent = document.getElementById('postContent').value.trim();
+  if (postContent !== '') {
+    const newPostKey = database.ref().child('posts').push().key;
+
+    const post = {
+      content: postContent,
+      timestamp: new Date().toISOString()
+    };
+
+    const updates = {};
+    updates['/posts/' + newPostKey] = post;
+
+    database.ref().update(updates)
+      .then(() => {
+        document.getElementById('postContent').value = '';
+      })
+      .catch((error) => {
+        console.error('Error adding post:', error);
+      });
+  }
+}
+
+// Function to display posts from the database
+function displayPosts() {
+  const postsList = document.getElementById('postsList');
+
+  database.ref('posts')
+    .orderByChild('timestamp')
+    .on('value', (snapshot) => {
+      postsList.innerHTML = '';
+      snapshot.forEach((childSnapshot) => {
+        const post = childSnapshot.val();
+        const postId = childSnapshot.key;
+        const postItem = document.createElement('div');
+        postItem.className = 'post-item';
+        postItem.innerHTML = `<p>${post.content}</p><small>${new Date(post.timestamp).toLocaleString()}</small>`;
+        postItem.addEventListener('click', () => {
+          openPostModal(postId);
+        });
+        postsList.appendChild(postItem);
+      });
+    });
+}
+
+// Call the displayPosts function to show initial posts and listen for changes
+displayPosts();
+
+// Function to open the post modal and display post and comments
+function openPostModal(postId) {
+    console.log(postId);
+    id=postId;
+  const postRef = database.ref('posts/' + postId);
+
+  postRef.once('value')
+    .then((snapshot) => {
+      const post = snapshot.val();
+      document.getElementById('postTitle').textContent = post.content;
+      document.getElementById('postFullContent').textContent = post.content;
+      document.getElementById('commentContent').value = '';
+
+      const commentsRef = database.ref('comments');
+      commentsRef.on('value', (commentsSnapshot) => {
+        const commentsList = document.getElementById('commentsList');
+        
+        commentsList.innerHTML = '';
+        commentsSnapshot.forEach((commentSnapshot) => {
+          const comment = commentSnapshot.val();
+    if (comment.key === postId) {
+          console.log(comment.content)
+          const commentItem = document.createElement('div');
+          commentItem.className = 'comment-item';
+          commentItem.innerHTML = `<p>${comment.content}</p><small>${new Date(comment.timestamp).toLocaleString()}</small>`;
+          commentsList.appendChild(commentItem);
+    }
+        });
+      });
+
+      document.getElementById('postModal').style.display = 'block';
+    });
+}
+
+
+// Function to close the post modal
+function closeModal() {
+  document.getElementById('postModal').style.display = 'none';
+}
+
+// Function to submit a new comment for a post
+function submitComment() {
+    
+  const commentContent = document.getElementById('commentContent').value.trim();
+  if (commentContent !== '') {
+    const postId = document.getElementById('postTitle').textContent;
+
+    const newCommentKey = database.ref().child('comments/' + postId).push().key;
+
+    const comment = {
+        key:id,
+      content: commentContent,
+      timestamp: new Date().toISOString()
+    };
+
+    const updates = {};
+    updates['/comments/' + '/' + newCommentKey] = comment;
+
+    database.ref().update(updates)
+      .then(() => {
+        document.getElementById('commentContent').value = '';
+      })
+      .catch((error) => {
+        console.error('Error adding comment:', error);
+      });
+  }
+}
+</script>
+
+</body>
+</html>
